@@ -1,0 +1,78 @@
+swagger: "2.0"
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+
+info:
+  version: "1.0.0"
+  title: Animals Demo
+  description: |
+    This is the Animals app demo where you can add your favorite animal to the application
+
+################################################################################
+#                  Host, Base Path, Schemes and Content Types                  #
+################################################################################
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+################################################################################
+#                                   Tags                                       #
+################################################################################
+#tags:
+
+
+################################################################################
+#                                           Paths                              #
+################################################################################
+
+paths:
+  /animals:
+    x-swagger-router-controller: invoke_lambda
+    post:
+      description: Creates user's favorite animal in system database
+      operationId: postAnimal
+      parameters:
+        - name: body
+          in: body
+          description: JSON payload containing user's favorite animal
+          schema:
+            $ref: "#/definitions/Animal"
+      responses:
+        "405":
+          description: Invalid input
+    get:
+      description: Look up a user's favorite animal
+      operationId: getAnimal
+      parameters:
+        - name: user
+          in: query
+          description: User's name
+          type: string
+          minLength: 30
+      responses:
+        "404":
+          description: User not found
+
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+  Animal:
+    type: object
+    required:
+      - user
+      - animal
+    properties:
+      user:
+        type: string
+        example: john
+      animal:
+        type: string
+        example: dog

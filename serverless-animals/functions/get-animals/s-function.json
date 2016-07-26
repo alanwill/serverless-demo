@@ -1,0 +1,26 @@
+{
+  "name": "get-animals",
+  "runtime": "python2.7",
+  "description": "Demo function for making a GET to Animals app",
+  "customName": "$${functionName}",
+  "customRole": "${iamRoleArnLambda}",
+  "handler": "handler.handler",
+  "timeout": 6,
+  "memorySize": 128,
+  "authorizer": {},
+  "custom": {
+    "excludePatterns": []
+  },
+  "endpoints": [],
+  "events": [],
+  "environment": {
+    "SERVERLESS_PROJECT": "${project}",
+    "SERVERLESS_STAGE": "${stage}",
+    "SERVERLESS_REGION": "${region}",
+    "ANIMALS_TABLENAME_ANIMALS_DEMO": "${dynamoTableNameAnimalsDemo}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}

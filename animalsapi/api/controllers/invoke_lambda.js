@@ -30,7 +30,7 @@ module.exports = {
 };
 
 //get the aws access details from the apigee vault
-var envVault = apigee.getVault('tailor', 'environment');
+var envVault = apigee.getVault('animals-demo', 'environment');
 envVault.get('aws_access_key', function(err, secretValue) {
     console.log('The deployment mode is ' + apigee.getMode());
     console.log('Retrieved aws_access_key from the vault.');
@@ -83,10 +83,6 @@ function invoke_lambda(req, res, lambdaFunction, action) {
             } else if (/.*Received.*/.test( JSON.stringify(data) ) ) {
                 console.log("Received");
                 res.status(202)
-            } else {
-                console.log("INTERNAL ERROR");
-                res.status(500);
-                res.send({"code": "5000", "message": "ERROR: An internal error occurred. Contact the AWS Operations team" })
             }
 
             console.log("Response:" + JSON.stringify(data));

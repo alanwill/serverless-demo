@@ -1,93 +1,110 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "The AWS CloudFormation template for this Serverless application's resources outside of Lambdas and Api Gateway",
-    "Resources": {
-        "IamRoleLambda": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [{
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": [
-                                "lambda.amazonaws.com"
-                            ]
-                        },
-                        "Action": [
-                            "sts:AssumeRole"
-                        ]
-                    }]
-                },
-                "Path": "/"
-            }
-        },
-        "IamPolicyLambda": {
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "${stage}-${project}-lambda",
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [{
-                        "Effect": "Allow",
-                        "Action": [
-                            "logs:CreateLogGroup",
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents"
-                        ],
-                        "Resource": "arn:aws:logs:${region}:*:*"
-                    }, {
-                        "Effect": "Allow",
-                        "Action": [
-                            "dynamodb:PutItem",
-                            "dynamodb:GetItem"
-                        ],
-                        "Resource": {
-                            "Fn::Join": ["", ["arn:aws:dynamodb:${region}:*:table/", {
-                                "Ref": "DynamoTableAnimalsDemo"
-                            }]]
-                        }
-                    }]
-                },
-                "Roles": [{
-                    "Ref": "IamRoleLambda"
-                }]
-            }
-        },
-        "DynamoTableAnimalsDemo": {
-            "Type": "AWS::DynamoDB::Table",
-            "Properties": {
-                "AttributeDefinitions": [{
-                    "AttributeName": "user",
-                    "AttributeType": "S"
-                }],
-                "KeySchema": [{
-                    "AttributeName": "user",
-                    "KeyType": "HASH"
-                }],
-                "ProvisionedThroughput": {
-                    "ReadCapacityUnits": "1",
-                    "WriteCapacityUnits": "1"
-                },
-                "TableName": "animals-demo"
-            }
-        }
-    },
-    "Outputs": {
-        "IamRoleArnLambda": {
-            "Description": "ARN of the lambda IAM role",
-            "Value": {
-                "Fn::GetAtt": [
-                    "IamRoleLambda",
-                    "Arn"
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application's resources outside of Lambdas and Api Gateway",
+  "Resources": {
+    "IamRoleLambda": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
                 ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
+          ]
         },
-        "DynamoTableNameAnimalsDemo": {
-            "Description": "DynamoDB table name",
-            "Value": {
-                "Ref": "DynamoTableAnimalsDemo"
+        "Path": "/"
+      }
+    },
+    "IamPolicyLambda": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "${stage}-${project}-lambda",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:${region}:*:*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem"
+              ],
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:dynamodb:${region}:*:table/",
+                    {
+                      "Ref": "DynamoTableAnimalsDemo"
+                    }
+                  ]
+                ]
+              }
             }
-        }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "IamRoleLambda"
+          }
+        ]
+      }
+    },
+    "DynamoTableAnimalsDemo": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "user",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "user",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "1",
+          "WriteCapacityUnits": "1"
+        },
+        "TableName": "animals-demo"
+      }
     }
+  },
+  "Outputs": {
+    "IamRoleArnLambda": {
+      "Description": "ARN of the lambda IAM role",
+      "Value": {
+        "Fn::GetAtt": [
+          "IamRoleLambda",
+          "Arn"
+        ]
+      }
+    },
+    "DynamoTableNameAnimalsDemo": {
+      "Description": "DynamoDB table name",
+      "Value": {
+        "Ref": "DynamoTableAnimalsDemo"
+      }
+    }
+  }
 }

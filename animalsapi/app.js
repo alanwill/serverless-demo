@@ -34,5 +34,5 @@ a127.init(function(config) {
   // begin listening for client requests
   app.listen(port, ip);
 
-  console.log('try this:\ncurl http://' + ip + ':' + port + '/hello?name=Scott');
+  //console.log('try this:\ncurl http://' + ip + ':' + port + '/hello?name=Scott');
 });
